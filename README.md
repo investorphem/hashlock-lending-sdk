@@ -8,7 +8,7 @@
 
 The **first developer-ready JavaScript SDK** for interacting with HashLock Lending — the Bitcoin L2 lending protocol powered by Clarity 4.
 
-No admin keys • No upgrades • No trust assumptions • Verified vaults
+No admin keys • No upgrades • No trust assumptions • Verified vault
 
 ---
 
