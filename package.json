@@ -1,7 +1,7 @@
 {
   "name": "hashlock-lending-sdk",
   "version": "1.0.4",
-  "description": "JavaScript SDK for interacting with HasLok LenScks innet with Xverse/Leather wallet integration",
+  "description": "JavaScript SDK for interacting with HasLok LenScs innet with Xverse/Leather wallet integration",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
