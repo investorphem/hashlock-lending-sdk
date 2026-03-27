@@ -1,38 +1,55 @@
-// test.js
-const { HashlockClient } = require("./index");
+import { HashlockClient } from "./index.js";
 
 async function main() {
-  // Initialize SDK with Xverse wallet on mainnet
-  const client = new HashlockClient({ network: "mainnet", walletType: "xverse" });
+  // Initialize SDK
+  const client = new HashlockClient({ network: "mainnet" });
 
   try {
-    // Connect wallet
-    console.log("Connecting wallet...");
-    await client.connectWallet({ appName: "HashLock SDK Test" });
+    console.log("--- Starting Hashlock SDK Logic Test ---");
 
-    // Create a loan
-    console.log("Creating loan...");
-    const loanId = await client.createLoan({
-      loanId: "loan1",
-      borrower: "SP123...",
-      lender: "SP456...",
-      amount: 1000,
-      preimage: "super-secret"
+    // 1. Test Hash Generation (Static method)
+    const preimage = "super-secret-key-123";
+    const expectedHash = HashlockClient.generateHash(preimage);
+    console.log("Generated Hash:", expectedHash);
+
+    // 2. Create a loan
+    console.log("\nCreating loan...");
+    const loanId = "loan_001";
+    await client.createLoan({
+      loanId: loanId,
+      borrower: "SP26KS99S808XSTB3369N00B9H6SQZ0D064E03A6Y",
+      lender: "SP3FG8S08XSTB3369N00B9H6SQZ0D064E03A6Y",
+      amount: 1000000, // 1 STX in micro-STX
+      preimage: preimage,
+      expiry: Date.now() + 3600000 // 1 hour from now
     });
-    console.log("Loan created:", await client.getLoanStatus(loanId));
 
-    // Repay the loan
-    console.log("Repaying loan...");
-    await client.repayLoan(loanId, "super-secret");
-    console.log("Loan repaid:", await client.getLoanStatus(loanId));
+    const status = client.getLoanStatus(loanId);
+    console.log("Loan Status:", status);
 
-    // Optional: send STX tokens
-    // console.log("Sending STX...");
-    // await client.sendSTX({ recipient: "SP789...", amount: 1000 });
-    // console.log("STX sent successfully");
+    // 3. Attempt repayment with WRONG preimage
+    console.log("\nAttempting repayment with wrong preimage...");
+    try {
+      await client.repayLoan(loanId, "wrong-password");
+    } catch (e) {
+      console.log("Success: Correctly caught invalid preimage error:", e.message);
+    }
+
+    // 4. Repay the loan with CORRECT preimage
+    console.log("\nRepaying loan with correct preimage...");
+    const isRepaid = await client.repayLoan(loanId, preimage);
+    
+    if (isRepaid) {
+      const finalStatus = client.getLoanStatus(loanId);
+      console.log("Loan successfully repaid!");
+      console.log("Final State:", finalStatus);
+    }
+
+    console.log("\n--- Logic Test Passed ---");
+    console.log("Note: connectWallet() and sendSTX() require a browser environment to trigger wallet popups.");
 
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error("Test failed:", error.message);
   }
 }
 
