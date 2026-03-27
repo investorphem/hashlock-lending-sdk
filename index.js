@@ -1,49 +1,49 @@
-const CryptoJS = require("crypto-js");
-const {
+import CryptoJS from "crypto-js";
+import {
   makeSTXTokenTransfer,
   broadcastTransaction,
-  bufferCV,
-  uintCV,
-  standardPrincipalCV,
-  callReadOnlyFunction,
-  callPublicFunction
-} = require("@stacks/transactions");
-const { StacksMainnet, StacksTestnet } = require("@stacks/network");
-const { AppConfig, UserSession, showConnect } = require("@stacks/connect");
+  AnchorMode,
+  PostConditionMode,
+} from "@stacks/transactions";
+import { StacksMainnet, StacksTestnet } from "@stacks/network";
+import { AppConfig, UserSession, showConnect, openSTXTransfer, openContractCall } from "@stacks/connect";
 
-class HashlockClient {
-  constructor({ network = "mainnet", walletType = null } = {}) {
+export class HashlockClient {
+  constructor({ network = "mainnet" } = {}) {
+    this.networkType = network;
     this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet();
-    this.walletType = walletType; // 'xverse' or 'leather'
-    this.userSession = null;
+    this.appConfig = new AppConfig(['store_write', 'publish_data']);
+    this.userSession = new UserSession({ appConfig: this.appConfig });
     this.loans = new Map();
   }
 
-  // Generate hash from preimage
+  // Generate SHA-256 hash from preimage
   static generateHash(preimage) {
     return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
   }
 
   // Connect wallet (Xverse or Leather)
-  async connectWallet({ appName = "HashLock Lending SDK" } = {}) {
-    const appConfig = new AppConfig(['store_write', 'publish_data']);
-    this.userSession = new UserSession({ appConfig });
-
-    if (!this.userSession.isUserSignedIn()) {
-      await showConnect({
-        appDetails: { name: appName, icon: "" },
+  async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
+    return new Promise((resolve, reject) => {
+      showConnect({
+        appDetails: { name: appName, icon: appIcon },
         redirectTo: "/",
-        onFinish: ({ userSession }) => {
-          this.userSession = userSession;
-          console.log("Wallet connected:", userSession.loadUserData().profile.stxAddress.mainnet);
-        }
+        onFinish: () => {
+          const userData = this.userSession.loadUserData();
+          console.log("Wallet connected:", userData.profile.stxAddress[this.networkType]);
+          resolve(userData);
+        },
+        onCancel: () => {
+          reject(new Error("User cancelled login"));
+        },
+        userSession: this.userSession,
       });
-    }
+    });
   }
 
-  // Create a hashlocked loan (off-chain registry for now)
+  // Create a hashlocked loan (off-chain registry)
   async createLoan({ loanId, borrower, lender, amount, preimage, expiry }) {
-    if (this.loans.has(loanId)) throw new Error("Loan ID exists");
+    if (this.loans.has(loanId)) throw new Error("Loan ID already exists");
 
     const preimageHash = HashlockClient.generateHash(preimage);
 
@@ -59,7 +59,7 @@ class HashlockClient {
     return loanId;
   }
 
-  // Repay a loan
+  // Repay a loan logic
   async repayLoan(loanId, preimage) {
     const loan = this.loans.get(loanId);
     if (!loan) throw new Error("Loan not found");
@@ -73,58 +73,51 @@ class HashlockClient {
   }
 
   // Get loan status
-  async getLoanStatus(loanId) {
+  getLoanStatus(loanId) {
     return this.loans.get(loanId) || null;
   }
 
-  // Send STX via connected wallet
+  // Send STX via Wallet Popup (Better UX for Xverse/Leather)
   async sendSTX({ recipient, amount }) {
-    if (!this.userSession || !this.userSession.isUserSignedIn()) {
+    if (!this.userSession.isUserSignedIn()) {
       throw new Error("Wallet not connected");
     }
 
-    const senderKey = this.userSession.loadUserData().profile.stxAddress.mainnet;
-    const txOptions = {
-      recipient,
-      amount,
-      senderKey,
-      network: this.network
-    };
-
-    const tx = await makeSTXTokenTransfer(txOptions);
-    return broadcastTransaction(tx, this.network);
-  }
-
-  // Example: Call a read-only Clarity contract function
-  async callReadOnly({ contractAddress, contractName, functionName, functionArgs = [] }) {
-    return callReadOnlyFunction({
-      contractAddress,
-      contractName,
-      functionName,
-      functionArgs,
-      network: this.network,
-      senderAddress: this.userSession?.loadUserData().profile.stxAddress.mainnet
+    return new Promise((resolve, reject) => {
+      openSTXTransfer({
+        recipient,
+        amount: amount.toString(),
+        network: this.network,
+        onFinish: (data) => resolve(data),
+        onCancel: () => reject(new Error("Transaction cancelled")),
+      });
     });
   }
 
-  // Example: Call a public Clarity contract function (on-chain)
-  async callPublicFunction({ contractAddress, contractName, functionName, functionArgs = [], postConditionMode = 1 }) {
-    if (!this.userSession || !this.userSession.isUserSignedIn()) {
+  // Call a public Clarity contract function via Wallet Popup
+  async callContract({ 
+    contractAddress, 
+    contractName, 
+    functionName, 
+    functionArgs = [], 
+    postConditionMode = PostConditionMode.Allow 
+  }) {
+    if (!this.userSession.isUserSignedIn()) {
       throw new Error("Wallet not connected");
     }
 
-    const txOptions = {
-      contractAddress,
-      contractName,
-      functionName,
-      functionArgs,
-      senderKey: this.userSession.loadUserData().appPrivateKey,
-      network: this.network,
-      postConditionMode
-    };
-
-    return callPublicFunction(txOptions);
+    return new Promise((resolve, reject) => {
+      openContractCall({
+        contractAddress,
+        contractName,
+        functionName,
+        functionArgs,
+        network: this.network,
+        postConditionMode,
+        anchorMode: AnchorMode.Any,
+        onFinish: (data) => resolve(data),
+        onCancel: () => reject(new Error("Contract call cancelled")),
+      });
+    });
   }
 }
-
-module.exports = { HashlockClient };
