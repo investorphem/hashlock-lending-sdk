@@ -26,39 +26,29 @@ yarn add hashlock-lending-sdk
 
 ---
 
-## Quick Start (with Wallet Integration)
+import { HashlockClient } from 'hashlock-lending-sdk';
 
-```javascript
-const { HashlockClient } = require('hashlock-lending-sdk');
+// Initialize SDK
+const client = new HashlockClient({ network: "mainnet" });
 
-async function main() {
-  // Initialize SDK with Xverse wallet on mainnet
-  const client = new HashlockClient({ network: "mainnet", walletType: "xverse" });
+// Connect wallet (Xverse / Leather)
+await client.connectWallet({ appName: "HashLock SDK Demo" });
 
-  // Connect wallet
-  await client.connectWallet({ appName: "HashLock SDK Demo" });
+// Create a new loan
+const loanId = await client.createLoan({
+  loanId: "loan_888",
+  borrower: "SP123...",
+  lender: "SP456...",
+  amount: 1000000, // 1 STX in micro-STX
+  preimage: "my-secure-preimage"
+});
 
-  // Create a new loan
-  const loanId = await client.createLoan({
-    loanId: "loan1",
-    borrower: "SP123...",
-    lender: "SP456...",
-    amount: 1000,
-    preimage: "super-secret"
-  });
+// Repay loan using the secret preimage
+await client.repayLoan("loan_888", "my-secure-preimage");
 
-  console.log("Loan created:", await client.getLoanStatus(loanId));
+const status = client.getLoanStatus("loan_888");
+console.log("Is Repaid:", status.repaid);
 
-  // Repay loan
-  await client.repayLoan(loanId, "super-secret");
-  console.log("Loan repaid:", await client.getLoanStatus(loanId));
-
-  // Send STX tokens (optional)
-  // await client.sendSTX({ recipient: "SP789...", amount: 1000 });
-}
-
-main();
-```
 
 ---
 
