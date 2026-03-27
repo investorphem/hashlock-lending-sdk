@@ -26,9 +26,9 @@ yarn add hashlock-lending-sdk
 
 ---
 
-
 ## Quick Start (ES Modules)
 
+```javascript
 import { HashlockClient } from 'hashlock-lending-sdk';
 
 // Initialize SDK
@@ -51,7 +51,7 @@ await client.repayLoan("loan_888", "my-secure-preimage");
 
 const status = client.getLoanStatus("loan_888");
 console.log("Is Repaid:", status.repaid);
-
+```
 
 ---
 
@@ -83,8 +83,8 @@ console.log("Is Repaid:", status.repaid);
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/yourusername/hashlock-lending.git
-cd hashlock-lending/sdk
+git clone [https://github.com/investorphem/hashlock-lending-sdk.git](https://github.com/investorphem/hashlock-lending-sdk.git)
+cd hashlock-lending-sdk
 ```
 
 ### 2. Install Dependencies
@@ -105,8 +105,7 @@ Use `createLoan`, `repayLoan`, and `getLoanStatus` methods as shown in the Quick
 
 ### 5. Call Clarity Contracts
 
-- `callReadOnly` → for read-only contract functions  
-- `callPublicFunction` → for on-chain function calls
+- `callContract` → For securely triggering on-chain contract calls via wallet popup.  
 
 ---
 
