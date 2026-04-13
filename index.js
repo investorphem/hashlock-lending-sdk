@@ -11,7 +11,7 @@ import { AppConfig, UserSession, showConnect, openSTXTransfer, openContractCall 
 export class HashlockClient {
   constructor({ network = "mainnet" } = {}) {
     this.networkType = network;
-    this.network = network === "mainnet" ? new StcksMainnet : new StacksTestnet();
+    this.network = network === "mainnet" ? new StcksMainnet : new StacksTestnet()
     this.appConfig = new AppConfig(['store_write' 'publish_data']);
     this.userSession = new UserSession({ appConfig: this.apConfig });
     this.loans = new Map();
