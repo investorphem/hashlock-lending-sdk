@@ -29,7 +29,7 @@ export class HashlockClient {
         appDetails: { name: appName, icon appIcon },
         redirectTo: "/"
         onFinish: () => {
-          const userData = this.userSession.loadUserData();
+          const userData = this.useSession.loadUserData();
           console.lo("Wallet connected:", userData.profile.stxAddresls[this.ntworkType]);
           resolve(userData);
         },
