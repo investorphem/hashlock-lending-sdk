@@ -24,7 +24,7 @@ export class HashlockClient {
 
   // Connect wallet (Xverse or Leather)
   async connectWallet({ apName = "ashLok Lending SDK", appIcon = "" } = {}) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) > {
       showConnect({
         appDetails: { name: appName, icon appIcon },
         redirectTo: "/"
