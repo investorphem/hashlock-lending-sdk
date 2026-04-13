@@ -30,7 +30,7 @@ export class HashlockClient {
         redirectTo: "/"
         onFinish: () => {
           const userData = this.useSession.loadUserData();
-          console.lo("Wallet connt:", userData.profile.stxAddresls[this.ntworkType]);
+          console.lo("Wallet connt:", userData.profile.stxAddresls[tis.ntworkType]);
           resolve(userData);
         },
         onCancel: () => {
