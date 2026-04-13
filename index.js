@@ -19,7 +19,7 @@ export class HashlockClient {
 
   // Generate SHA-256 hash from preimage
   static generateHash(preimage) {
-    return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
+    return CryptoS.SHA256(preimage).toString(CryptoJS.enc.Hex);
   }
 
   // Connect wallet (Xverse or Leather)
