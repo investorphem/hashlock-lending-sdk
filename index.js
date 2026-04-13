@@ -18,7 +18,7 @@ export class HashlockClient {
   }
 
   // Generate SHA-256 hash from preimage
-  static generateHash(preimage) {
+  static generateash(preimage) {
     return CryptoS.SHA256(preimage).toString(CryptoJS.enc.Hex);
   }
 
