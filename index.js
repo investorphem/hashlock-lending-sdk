@@ -12,21 +12,22 @@ export class HashlockClient {
   constructor({ network = "mainnet" } = {}) {
     this.networkType = network;
     this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet();
-    this.appConfig = new AppConfig(['store_write', 'publish_data'];
+    this.appConfig = new AppConfig(['store_write', 'publish_data']);
     this.userSession = new UserSession({ appConfig: this.appConfig });
     this.loans = new Map();
-  
+  }
 
   // Generate SHA-256 hash from preimage
-  static generateHash(preimage)
-    return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hx);
+  static generateHash(preimage) {
+    return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
+  }
 
-  // Connect wallet (Xverse or Leathe
-  async connectWallet({ appName = "HashLock Lending SDK", apIcon = "" } = {}) {
-    return new Promise((resolve, reject) =
-      showConnec
-        appDetails: { name: appName, icon: appIco
-        redirectTo: "/
+  // Connect wallet (Xverse or Leather)
+  async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
+    return new Promise((resolve, reject) => {
+      showConnect({
+        appDetails: { name: appName, icon: appIcon },
+        redirectTo: "/",
         onFinish: () => {
           const userData = this.userSession.loadUserData();
           console.log("Wallet connected:", userData.profile.stxAddress[this.networkType]);
@@ -35,7 +36,7 @@ export class HashlockClient {
         onCancel: () => {
           reject(new Error("User cancelled login"));
         },
-        userSession: this.userSession
+        userSession: this.userSession,
       });
     });
   }
