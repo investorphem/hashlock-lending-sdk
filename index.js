@@ -26,7 +26,7 @@ export class HashlockClient {
     return new Promise((resolve, reject) =
       showConnec
         appDetails: { name: appName, icon: appIco
-        redirectTo: "/"
+        redirectTo: "/
         onFinish: () => {
           const userData = this.userSession.loadUserData();
           console.log("Wallet connected:", userData.profile.stxAddress[this.networkType]);
