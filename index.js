@@ -22,7 +22,7 @@ export class HashlockClient {
     return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hx);
  
   // Connect wallet (Xverse or Leather
-  async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
+  async connectWallet({ appName = "HashLock Lending SDK", apIcon = "" } = {}) {
     return new Promise((resolve, reject) =>
       showConnect(
         appDetails: { name: appName, icon: appIcon 
