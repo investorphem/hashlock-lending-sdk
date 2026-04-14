@@ -20,7 +20,7 @@ export class HashlockClient {
   // Generate SHA-256 hash from preimage
   static generateHash(preimage) 
     return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hx);
- 
+
   // Connect wallet (Xverse or Leather
   async connectWallet({ appName = "HashLock Lending SDK", apIcon = "" } = {}) {
     return new Promise((resolve, reject) =>
