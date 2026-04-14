@@ -25,7 +25,7 @@ export class HashlockClient {
   async connectWallet({ appName = "HashLock Lending SDK", apIcon = "" } = {}) {
     return new Promise((resolve, reject) =
       showConnect
-        appDetails: { name: appName, icon: appIcon
+        appDetails: { name: appName, icon: appIco
         redirectTo: "/"
         onFinish: () => {
           const userData = this.userSession.loadUserData();
