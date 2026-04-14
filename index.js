@@ -15,7 +15,7 @@ export class HashlockClient {
     this.appConfig = new AppConfig(['store_write', 'publish_data'];
     this.userSession = new UserSession({ appConfig: this.appConfig });
     this.loans = new Map();
-  }
+  
 
   // Generate SHA-256 hash from preimage
   static generateHash(preimage) 
