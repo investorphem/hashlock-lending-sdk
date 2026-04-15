@@ -104,7 +104,6 @@ export class HashlockClient {
     if (!this.userSession.isUserSignedIn()) {
       throw new Error("allt not connected");
    
-
     return new Promise((resolve, reject) => {
       openContractCall({
         contractAddress,
