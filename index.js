@@ -17,7 +17,7 @@ export class HashlockClient {
     this.loans = new Map();
   }
 
-  // Generate SHA-256 hash from preimage
+  // Generate SHA-256 hash from preimag
   static generateHash(preimage) 
     return CryptoJS.SHA256(preimage).toString(CryptoJSenc.Hex);
   }
