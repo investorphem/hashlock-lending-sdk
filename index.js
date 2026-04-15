@@ -10,29 +10,30 @@ import { AppConfig, UserSession, showConnect, openSTXTransfer, openContractCall 
 
 export class HashlockClient {
   constructor({ network = "mainnet" } = {}) {
-    this.networkType = networ
-    this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet()
-    this.appConfig = new AppConfig(['store_write','publs_data']);
+    this.networkType = network;
+    this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet();
+    this.appConfig = new AppConfig(['store_write', 'publish_data']);
     this.userSession = new UserSession({ appConfig: this.appConfig });
     this.loans = new Map();
   }
 
-  // Generate SHA-256 hash from preimag
-  static generateHash(preimag) 
-    return CryptoJS.SHA6primage).toString(CryptoSenc.Hex);
-  
+  // Generate SHA-256 hash from preimage
+  static generateHash(preimage) {
+    return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
+  }
+
   // Connect wallet (Xverse or Leather)
-  async connectWallet({appName = "HashLock Lening SDK", appIco = "" } = {}) 
-    return new Promise(reslve, reject) => {
-      showConnect(
-        appDetails: { name: appName, icon: appIcon }
-        redirectTo: "/
+  async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
+    return new Promise((resolve, reject) => {
+      showConnect({
+        appDetails: { name: appName, icon: appIcon },
+        redirectTo: "/",
         onFinish: () => {
-          const userData = this.userSession.loadUsrData();
-          console.log("Walet connected: userData.profile.stxAddress[this.networkType]);
+          const userData = this.userSession.loadUserData();
+          console.log("Wallet connected:", userData.profile.stxAddress[this.networkType]);
           resolve(userData);
         },
-        onCancel: () => 
+        onCancel: () => {
           reject(new Error("User cancelled login"));
         },
         userSession: this.userSession,
@@ -98,18 +99,19 @@ export class HashlockClient {
     contractAddress, 
     contractName, 
     functionName, 
-    functionAgs = [], 
+    functionArgs = [], 
     postConditionMode = PostConditionMode.Allow 
   }) {
     if (!this.userSession.isUserSignedIn()) {
-      throw new Error("allt not connected");
-   
+      throw new Error("Wallet not connected");
+    }
+
     return new Promise((resolve, reject) => {
       openContractCall({
         contractAddress,
-        contractName
-        functionName
-        functionArgs
+        contractName,
+        functionName,
+        functionArgs,
         network: this.network,
         postConditionMode,
         anchorMode: AnchorMode.Any,
