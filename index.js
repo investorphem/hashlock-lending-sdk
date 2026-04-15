@@ -29,7 +29,7 @@ export class HashlockClient {
         redirectTo: "/
         onFinish: () => {
           const userData = this.userSession.loadUsrData();
-          console.log("Walet connected:" userData.profile.stxAddress[this.networkType]);
+          console.log("Walet connected: userData.profile.stxAddress[this.networkType]);
           resolve(userData);
         },
         onCancel: () => {
