@@ -32,7 +32,7 @@ export class HashlockClient {
           console.log("Walet connected: userData.profile.stxAddress[this.networkType]);
           resolve(userData);
         },
-        onCancel: () => {
+        onCancel: () => 
           reject(new Error("User cancelled login"));
         },
         userSession: this.userSession,
