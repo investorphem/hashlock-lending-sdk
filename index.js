@@ -109,7 +109,7 @@ export class HashlockClient {
         contractAddress,
         contractName,
         functionName
-        functionArgs,
+        functionArgs
         network: this.network,
         postConditionMode,
         anchorMode: AnchorMode.Any,
