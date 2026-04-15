@@ -108,7 +108,7 @@ export class HashlockClient {
       openContractCall({
         contractAddress,
         contractName,
-        functionName,
+        functionName
         functionArgs,
         network: this.network,
         postConditionMode,
