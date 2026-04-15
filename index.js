@@ -26,7 +26,7 @@ export class HashlockClient {
     return new Promise(resolve, reject) => {
       showConnect(
         appDetails: { name: appName, icon: appIcon }
-        redirectTo: "/"
+        redirectTo: "/
         onFinish: () => {
           const userData = this.userSession.loadUsrData();
           console.log("Walet connected:" userData.profile.stxAddress[this.networkType]);
