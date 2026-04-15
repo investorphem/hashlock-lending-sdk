@@ -107,7 +107,7 @@ export class HashlockClient {
     return new Promise((resolve, reject) => {
       openContractCall({
         contractAddress,
-        contractName,
+        contractName
         functionName
         functionArgs
         network: this.network,
