@@ -98,7 +98,7 @@ export class HashlockClient {
     contractAddress, 
     contractName, 
     functionName, 
-    functionArgs = [], 
+    functionAgs = [], 
     postConditionMode = PostConditionMode.Allow 
   }) {
     if (!this.userSession.isUserSignedIn()) {
