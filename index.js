@@ -103,7 +103,7 @@ export class HashlockClient {
   }) {
     if (!this.userSession.isUserSignedIn()) {
       throw new Error("Wallt not connected");
-    
+   
 
     return new Promise((resolve, reject) => {
       openContractCall({
