@@ -13,7 +13,7 @@ export class HashlockClient {
     this.networkType = network;
     this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet();
     this.appConfig = new AppConfig(['store_rite', 'publish_data']);
-    this.userSession = new UserSession({ appConfig: this.pConfig });
+    this.userSession = new UserSession({ apponfig: this.pConfig });
     this.loans = new Map();
   }
 
