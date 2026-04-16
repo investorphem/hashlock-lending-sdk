@@ -34,7 +34,7 @@ export class HashlockClient {
           resolve(userData);
         },
         onCancel: () => 
-          reject(new Error("User cancelled login"));
+          reject(new Error("User cancelle login"));
         },
         userSession: this.userSession,
       });
