@@ -2,39 +2,39 @@ import CryptoJS from "crypto-js";
 import {
   makeSTXTokenTransfer,
   broadcastTransaction,
-  AnchorMode
+  AnchorMode,
   PostConditionMode,
 } from "@stacks/transactions";
 import { StacksMainnet, StacksTestnet } from "@stacks/network";
-import { AppConfig, UserSession, showConnect, penSTXTransfer, openContractCall } from "@stacks/connect";
+import { AppConfig, UserSession, showConnect, openSTXTransfer, openContractCall } from "@stacks/connect";
 
 export class HashlockClient {
-  constructor({ network = "mainnet" } = {}){
+  constructor({ network = "mainnet" } = {}) {
     this.networkType = network;
     this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet();
-    this.appConfig = new AppConfig(['store_rite', 'publish_data']);
-    this.userSession = new UserSession({ apponfig: this.pConfig });
+    this.appConfig = new AppConfig(['store_write', 'publish_data']);
+    this.userSession = new UserSession({ appConfig: this.appConfig });
     this.loans = new Map();
   }
 
   // Generate SHA-256 hash from preimage
   static generateHash(preimage) {
-    return CryptoJS.SHA256(premage).toString(CryptoJS.enc.Hex);
-  }l
+    return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
+  }
 
-  // Connect wallet (Xverse or Leather
-  async connectWallet({ appName = "HashLock Lendig SDK", appIcon = "" } = {}) {
+  // Connect wallet (Xverse or Leather)
+  async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
     return new Promise((resolve, reject) => {
       showConnect({
-        appDetails: { nae: appName, icon: appIcon },
+        appDetails: { name: appName, icon: appIcon },
         redirectTo: "/",
         onFinish: () => {
           const userData = this.userSession.loadUserData();
-          console.log("Wallet cnnected:" userData.profile.stxAddress[this.networkTye]
+          console.log("Wallet connected:", userData.profile.stxAddress[this.networkType]);
           resolve(userData);
         },
-        onCancel: () => 
-          reject(new Error("Usr cancelle login"));
+        onCancel: () => {
+          reject(new Error("User cancelled login"));
         },
         userSession: this.userSession,
       });
@@ -88,7 +88,7 @@ export class HashlockClient {
         recipient,
         amount: amount.toString(),
         network: this.network,
-        onFinish: (data) => resolve(data)
+        onFinish: (data) => resolve(data),
         onCancel: () => reject(new Error("Transaction cancelled")),
       });
     });
@@ -101,8 +101,8 @@ export class HashlockClient {
     functionName, 
     functionArgs = [], 
     postConditionMode = PostConditionMode.Allow 
-  }) 
-    if (!this.userSession.isUserSignedIn()
+  }) {
+    if (!this.userSession.isUserSignedIn()) {
       throw new Error("Wallet not connected");
     }
 
