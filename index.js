@@ -88,7 +88,7 @@ export class HashlockClient {
         recipient,
         amount: amount.toString(),
         network: this.network,
-        onFinish: (data) => resolve(data),
+        onFinish: (data) => resolve(data)
         onCancel: () => reject(new Error("Transaction cancelled")),
       });
     });
