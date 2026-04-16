@@ -101,7 +101,7 @@ export class HashlockClient {
     functionName, 
     functionArgs = [], 
     postConditionMode = PostConditionMode.Allow 
-  }) {
+  }) 
     if (!this.userSession.isUserSignedIn()) {
       throw new Error("Wallet not connected");
     }
