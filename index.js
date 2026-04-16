@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 import {
   makeSTXTokenTransfer,
   broadcastTransaction,
-  AnchorMode,
+  AnchorMode
   PostConditionMode,
 } from "@stacks/transactions";
 import { StacksMainnet, StacksTestnet } from "@stacks/network";
