@@ -9,7 +9,7 @@ import { StacksMainnet, StacksTestnet } from "@stacks/network";
 import { AppConfig, UserSession, showConnect, openSTXTransfer, openContractCall } from "@stacks/connect";
 
 export class HashlockClient {
-  constructor({ network = "mainnet" } = {}) {
+  constructor({ network = "mainnet" } = {}){
     this.networkType = network;
     this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet();
     this.appConfig = new AppConfig(['store_rite', 'publish_data']);
