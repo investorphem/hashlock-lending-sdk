@@ -14,7 +14,7 @@ async function main() {
 
     // 2. Create a loan
     console.log("\nCreating loan...");
-    const loanId = "loan_001";
+    const loanId = "loan_001"
     await client.createLoan({
       loanId: loanId,
       borrower: "SP26KS99S808XSTB3369N00B9H6SQZ0D064E03A6Y",
