@@ -33,7 +33,7 @@ async function main() {
       await client.repayLoan(loanId, "wrong-password");
     } catch (e) {
       console.log("Success: Correctly caught invalid preimage error:", e.message);
-    }
+    
 
     // 4. Repay the loan with CORRECT preimage
     console.log("\nRepaying loan with correct preimage...");
