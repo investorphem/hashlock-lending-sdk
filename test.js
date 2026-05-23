@@ -37,7 +37,7 @@ async function main() {
     // 4. Repay the loan with CORRECT preimage
     console.log("\nRepaying loan with correct preimage...");
     const isRepaid = await client.repayLoan(loanId, preimage)
-    
+   
     if (isRepaid) {
       const finalStatus = client.getLoanStatus(loanId);
       console.log("Loan successfully repaid!");
