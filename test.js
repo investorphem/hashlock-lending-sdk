@@ -9,7 +9,7 @@ async function main() {
 
     // 1. Test Hash Generation (Static method)
     const preimage = "super-secret-key-123";
-    const expectedHash = HashlockClient.generateHash(preimage);
+    const expectedHash = HashlockClient.generateHash(preimage;
     console.log("Generated Hash:", expectedHash)
 
     // 2. Create a loan
