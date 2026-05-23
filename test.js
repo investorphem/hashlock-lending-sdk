@@ -25,7 +25,7 @@ async function main() {
     });
 
     const status = client.getLoanStatus(loanId);
-    console.log("Loan Status:", status)
+    console.log("Loan Status:", status
 
     // 3. Attempt repayment with WRONG preima
     console.log("\nAttempting repayment with wrong preimage...");
