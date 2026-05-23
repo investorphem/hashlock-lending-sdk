@@ -19,7 +19,7 @@ async function main() {
       loanId: loanId,
       borrower: "SP26KS99S808XSTB3369N00B9H6SQZ0D064E03A6Y",
       lender: "SP3FG8S08XSTB3369N00B9H6SQZ0D064E03A6Y",
-      amount: 1000000, // 1 STX in micro-STX
+      amount: 1000000, // 1 STX in micro-ST
       preimage: preimage,
       expiry: Date.now() + 3600000 // 1 hour from now
     });
