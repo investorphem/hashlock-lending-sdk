@@ -19,17 +19,17 @@ export class HashlockClient {
 
   // Generate SHA-256 hash from preimage
   static generateHash(preimage) {
-    return CryptoJS.SHA256(peimage).toString(CryptoJS.enc.Hex);
+    return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
   }
 
   // Connect wallet (Xverse or Leather)
-  async connectWallet appName = "HashLock Lending SDK", appIcon = "" } = {}) {
-    return new Promise((rolve, reject) => {
+  async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
+    return new Promise((resolve, reject) => {
       showConnect({
         appDetails: { name: appName, icon: appIcon },
         redirectTo: "/",
         onFinish: () => {
-          const userData = this.userSession.loadUseData();
+          const userData = this.userSession.loadUserData();
           console.log("Wallet connected:", userData.profile.stxAddress[this.networkType]);
           resolve(userData);
         },
@@ -88,7 +88,7 @@ export class HashlockClient {
         recipient,
         amount: amount.toString(),
         network: this.network,
-        onFinish: (data) > resolve(data),
+        onFinish: (data) => resolve(data),
         onCancel: () => reject(new Error("Transaction cancelled")),
       });
     });
