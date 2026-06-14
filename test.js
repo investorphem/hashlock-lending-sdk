@@ -12,18 +12,6 @@ async function main() {
     const expectedHash = HashlockClient.generateHash(preimage);
     console.log("Generated Hash:", expectedHash);
 
-    // 2. Create a loan
-    console.log("\nCreating loan...");
-    const loanId = "loan_001";
-    await client.createLoan({
-      loanId: loanId,
-      borrower: "SP26KS99S808XSTB3369N00B9H6SQZ0D064E03A6Y",
-      lender: "SP3FG8S08XSTB3369N00B9H6SQZ0D064E03A6Y",
-      amount: 1000000, // 1 STX in micro-STX
-      preimage: preimage,
-      expiry: Date.now() + 3600000 // 1 hour from now
-    });
-
     const status = client.getLoanStatus(loanId);
     console.log("Loan Status:", status);
 
