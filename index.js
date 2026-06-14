@@ -17,10 +17,6 @@ export class HashlockClient {
     this.loans = new Map();
   }
 
-  // Generate SHA-256 hash from preimage
-  static generateHash(preimage) {
-    return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
-  }
 
   // Connect wallet (Xverse or Leather)
   async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
