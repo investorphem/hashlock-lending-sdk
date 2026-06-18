@@ -13,16 +13,23 @@ export class HashlockClient {
     this.networkType = network;
     this.network = network === "mainnet" ? new StacksMainnet() : new StacksTestnet();
     this.appConfig = new AppConfig(['store_write', 'publish_data']);
+    this.userSession = new UserSession({ appConfig: this.appConfig });
     this.loans = new Map();
   }
 
+  // Generate SHA-256 hash from preimage
   static generateHash(preimage) {
     return CryptoJS.SHA256(preimage).toString(CryptoJS.enc.Hex);
   }
+
+  // Connect wallet (Xverse or Leather)
   async connectWallet({ appName = "HashLock Lending SDK", appIcon = "" } = {}) {
     return new Promise((resolve, reject) => {
       showConnect({
         appDetails: { name: appName, icon: appIcon },
+        redirectTo: "/",
+        onFinish: () => {
+          const userData = this.userSession.loadUserData();
           console.log("Wallet connected:", userData.profile.stxAddress[this.networkType]);
           resolve(userData);
         },
