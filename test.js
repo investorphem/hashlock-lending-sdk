@@ -11,6 +11,8 @@ async function main() {
     const preimage = "super-secret-key-123";
     const expectedHash = HashlockClient.generateHash(preimage);
     console.log("Generated Hash:", expectedHash);
+
+    // 2. Create a loan
     console.log("\nCreating loan...");
     const loanId = "loan_001";
     await client.createLoan({
@@ -24,6 +26,14 @@ async function main() {
 
     const status = client.getLoanStatus(loanId);
     console.log("Loan Status:", status);
+
+    // 3. Attempt repayment with WRONG preimage
+    console.log("\nAttempting repayment with wrong preimage...");
+    try {
+      await client.repayLoan(loanId, "wrong-password");
+    } catch (e) {
+      console.log("Success: Correctly caught invalid preimage error:", e.message);
+    }
 
     // 4. Repay the loan with CORRECT preimage
     console.log("\nRepaying loan with correct preimage...");
