@@ -6,6 +6,7 @@ import {
   PostConditionMode,
 } from "@stacks/transactions";
 import { StacksMainnet, StacksTestnet } from "@stacks/network";
+import { AppConfig, UserSession, showConnect, openSTXTransfer, openContractCall } from "@stacks/connect";
 
 export class HashlockClient {
   constructor({ network = "mainnet" } = {}) {
